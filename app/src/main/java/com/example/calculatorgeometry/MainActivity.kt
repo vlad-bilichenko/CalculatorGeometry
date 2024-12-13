@@ -35,6 +35,9 @@ fun GeometryCalculatorApp() {
     var areaResultCircle by remember { mutableStateOf("") }
     var side by remember { mutableStateOf("") }
     var areaResultSquare by remember { mutableStateOf("") }
+    var width by remember { mutableStateOf("") }
+    var height by remember { mutableStateOf("") }
+    var areaResultRectangle by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -102,6 +105,41 @@ fun GeometryCalculatorApp() {
                 }
             },
             areaResult = areaResultSquare
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        CalculationCard(
+            title = "Площа прямокутника",
+            inputFields = {
+                TextField(
+                    value = width,
+                    onValueChange = { width = it },
+                    label = { Text("Ширина") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                TextField(
+                    value = height,
+                    onValueChange = { height = it },
+                    label = { Text("Висота") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            onCalculate = {
+                areaResultRectangle = if (width.isNotEmpty() && height.isNotEmpty()) {
+                    val w = width.toDoubleOrNull()
+                    val h = height.toDoubleOrNull()
+                    if (w != null && h != null && w > 0 && h > 0) {
+                        "Площа прямокутника: ${w * h}"
+                    } else {
+                        "Ширина та висота мають бути додатними числами"
+                    }
+                } else {
+                    "Введіть правильні значення ширини та висоти"
+                }
+            },
+            areaResult = areaResultRectangle
         )
     }
 }

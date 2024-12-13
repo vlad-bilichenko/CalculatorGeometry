@@ -1,4 +1,4 @@
-package com.example.calculatorgeometry.ui.theme
+package com.example.geomcalculator.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

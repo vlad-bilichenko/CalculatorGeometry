@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.calculatorgeometry"
-    compileSdk = 34
+    namespace = "com.example.geometrycalculator"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.calculatorgeometry"
+        applicationId = "com.example.geometrycalculator"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -40,7 +40,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -56,4 +55,20 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // Основные зависимости Jetpack Compose
+    implementation("androidx.compose.ui:ui:1.5.1")
+    implementation("androidx.compose.material:material:1.5.1")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.5.1")
+    implementation("androidx.activity:activity-compose:1.7.2")
+
+    // Дополнительные зависимости для Compose
+    debugImplementation("androidx.compose.ui:ui-tooling:1.5.1")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.1")
+
+    // Для тестирования
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.1")
+
+    // Общие зависимости
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.core:core-ktx:1.12.0")
 }

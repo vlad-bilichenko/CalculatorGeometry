@@ -1,47 +1,121 @@
-package com.example.calculatorgeometry
+package com.example.geometrycalculator
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.calculatorgeometry.ui.theme.CalculatorGeometryTheme
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.example.geometrycalculator.ui.theme.GeometryCalculatorTheme
+import kotlin.math.PI
+import kotlin.math.pow
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            CalculatorGeometryTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            GeometryCalculatorTheme {
+                GeometryCalculatorApp()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun GeometryCalculatorApp() {
+    var radius by remember { mutableStateOf("") }
+    var areaResultCircle by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            "Калькулятор площі круга",
+            style = MaterialTheme.typography.h5,
+            color = Color.Red,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        CalculationCard(
+            title = "Площа круга",
+            inputFields = {
+                TextField(
+                    value = radius,
+                    onValueChange = { radius = it },
+                    label = { Text("Радіус") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            onCalculate = {
+                areaResultCircle = if (radius.isNotEmpty()) {
+                    val r = radius.toDoubleOrNull()
+                    if (r != null && r > 0) {
+                        "Площа круга: ${PI * r.pow(2)}"
+                    } else {
+                        "Радіус має бути додатним числом"
+                    }
+                } else {
+                    "Введіть правильне значення радіуса"
+                }
+            },
+            areaResult = areaResultCircle
+        )
+    }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    CalculatorGeometryTheme {
-        Greeting("Android")
+fun CalculationCard(title: String, inputFields: @Composable () -> Unit, onCalculate: () -> Unit, areaResult: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp),
+        shape = RoundedCornerShape(8.dp),
+        backgroundColor = Color(0xFFE3F2FD)
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+        ) {
+            Text(title, style = MaterialTheme.typography.subtitle1, color = Color.Black)
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            inputFields()
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = areaResult,
+                    modifier = Modifier.weight(1f),
+                    color = Color.DarkGray
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Button(
+                    onClick = onCalculate,
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
+                    modifier = Modifier.wrapContentWidth()
+                ) {
+                    Text("Обчислити", color = Color.White)
+                }
+            }
+        }
     }
 }

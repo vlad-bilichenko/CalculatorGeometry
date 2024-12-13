@@ -33,6 +33,8 @@ class MainActivity : ComponentActivity() {
 fun GeometryCalculatorApp() {
     var radius by remember { mutableStateOf("") }
     var areaResultCircle by remember { mutableStateOf("") }
+    var side by remember { mutableStateOf("") }
+    var areaResultSquare by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -42,7 +44,7 @@ fun GeometryCalculatorApp() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "Калькулятор площі круга",
+            "Калькулятор геометричних площ",
             style = MaterialTheme.typography.h5,
             color = Color.Red,
             textAlign = TextAlign.Center
@@ -73,6 +75,33 @@ fun GeometryCalculatorApp() {
                 }
             },
             areaResult = areaResultCircle
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        CalculationCard(
+            title = "Площа квадрата",
+            inputFields = {
+                TextField(
+                    value = side,
+                    onValueChange = { side = it },
+                    label = { Text("Сторона квадрата") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            onCalculate = {
+                areaResultSquare = if (side.isNotEmpty()) {
+                    val s = side.toDoubleOrNull()
+                    if (s != null && s > 0) {
+                        "Площа квадрата: ${s.pow(2)}"
+                    } else {
+                        "Сторона має бути додатним числом"
+                    }
+                } else {
+                    "Введіть правильне значення сторони"
+                }
+            },
+            areaResult = areaResultSquare
         )
     }
 }

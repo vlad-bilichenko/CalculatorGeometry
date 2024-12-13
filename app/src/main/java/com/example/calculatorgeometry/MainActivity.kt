@@ -38,6 +38,9 @@ fun GeometryCalculatorApp() {
     var width by remember { mutableStateOf("") }
     var height by remember { mutableStateOf("") }
     var areaResultRectangle by remember { mutableStateOf("") }
+    var base by remember { mutableStateOf("") }
+    var triangleHeight by remember { mutableStateOf("") }
+    var areaResultTriangle by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -140,6 +143,41 @@ fun GeometryCalculatorApp() {
                 }
             },
             areaResult = areaResultRectangle
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        CalculationCard(
+            title = "Площа трикутника",
+            inputFields = {
+                TextField(
+                    value = base,
+                    onValueChange = { base = it },
+                    label = { Text("Основа трикутника") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                TextField(
+                    value = triangleHeight,
+                    onValueChange = { triangleHeight = it },
+                    label = { Text("Висота трикутника") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            onCalculate = {
+                areaResultTriangle = if (base.isNotEmpty() && triangleHeight.isNotEmpty()) {
+                    val b = base.toDoubleOrNull()
+                    val h = triangleHeight.toDoubleOrNull()
+                    if (b != null && h != null && b > 0 && h > 0) {
+                        "Площа трикутника: ${(b * h) / 2}"
+                    } else {
+                        "Основа та висота мають бути додатними числами"
+                    }
+                } else {
+                    "Введіть правильні значення основи та висоти"
+                }
+            },
+            areaResult = areaResultTriangle
         )
     }
 }
